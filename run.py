@@ -118,7 +118,8 @@ def get_invoice(session_token, KSeFReferenceNumber, host = HOST):
     }
     response = requests.get(url,headers=headers)
     if response.status_code >= 200 and response.status_code < 300:
-        return response.content
+        with open('nowa_faktura.xml','wb') as invoicef:
+            invoicef.write(response.content)
     else:
         print(response.content)
         raise RuntimeError
@@ -170,7 +171,7 @@ if __name__== '__main__':
     print("Invoice list")
     print(invoices_list(session_token))
     print("Invoice")
-    print(get_invoice(session_token,'1111111111-20240524-BA1A649C2FEB-BC'))
+    get_invoice(session_token,'1111111111-20240524-BA1A649C2FEB-BC')
     print("Invoice status")
     print(get_invoice_status(session_token,elementRef))
     sleep(15)
